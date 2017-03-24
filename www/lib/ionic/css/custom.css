@@ -1,0 +1,20 @@
+#menu-button{position:fixed;top:0px;z-index:99999;width:auto;background:none;border:none;outline:none;margin:0;-webkit-transition: all 0.2s;-moz-transition: all 0.2s;transition: all 0.2s;}
+#menu-button.active{margin-left:250px;}
+.navigation-bar{position: fixed;background:rgba(0,0,0,.97);width: 100%;max-width: 250px;top:0px;z-index: 99999;bottom:0px;-webkit-transition: all 0.2s;-moz-transition: all 0.2s;transition: all 0.2s;-webkit-transform:translateX(-100%);-moz-transform:translateX(-100%);-ms-transform:translateX(-100%);-o-transform:translateX(-100%);transform:translateX(-100%);width:250px;padding:20px 10px;}
+.navigation-bar.open{-webkit-transform:translateX(0px);-moz-transform:translateX(0px);-ms-transform:translateX(0px);-o-transform:translateX(0px);transform:translateX(0px);}
+.navigation-bar a{color:#fff;}
+.navigation-bar .inner-header{ overflow-x: hidden;overflow-y: auto;position: relative;height: 100%;}
+.navigation-bar .cate-wrap{border:solid 1px #f51604;border-radius:4px;}
+.navigation-bar .cate-wrap button{width:50%;height:35px;border:none;color:#f51604;background:none;font-size:14px;}
+.navigation-bar .cate-wrap button.active{background:#f51604;color:#000;}
+.navigation-bar ul li{margin-top:30px}
+.navigation-bar ul li a{text-decoration:none;font-size:15px;}
+.share-icon{ font-size: 25px; }
+
+.tab-nav.tabs{
+	display: none;
+}
+
+.has-tabs {
+	bottom: 5px;
+}
