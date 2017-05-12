@@ -74,27 +74,28 @@
      <div class="inner-header navigation-bar">
        <div class="cate-wrap"><button id="cat_btn" class="active">Categories</button><button  id="set_btn">Settings</button></div>
        <ul id="categories-list" >
-         <li ng-repeat="x in cat track by $index"  ng-click="show_category(x.list)"><a href="#">{{x.list}}</a></li>
-       </ul>
-       
-       <ul id="setting-list" style="display:none;">
-         <li><a ui-sref="tabsController.home">Home</a></li>
-         <li><a ui-sref="tabsController.about">About</a></li>
-         <li><a ui-sref="tabsController.services">Services</a></li>
-         <li><a ui-sref="tabsController.Feedback">Send Feedback</a></li>
-         <li><a ui-sref="tabsController.Contact">Contact Us</a></li>
-         <li><a ui-sref="#">Share App</a></li>
-       </ul>
-     </div>
-     <ion-nav-bar class="bar bar-header bar-assertive">
+        <li><a href="" ng-click="home_click()">Top Stories</a></li>
+        <li ng-repeat="x in cat track by $index"  ng-click="show_category(x.list)"><a href="#">{{x.list}}</a></li>
+      </ul>
 
+      <ul id="setting-list" style="display:none;">
 
-     </ion-nav-bar>
-     
-     <ion-nav-view animation="slide-left-right">
-
-     </ion-nav-view>
+       <li><a ui-sref="tabsController.about">About</a></li>
+       <li><a ui-sref="tabsController.services">Services</a></li>
+       <li><a ui-sref="tabsController.Feedback">Send Feedback</a></li>
+       <li><a ui-sref="tabsController.Contact">Contact Us</a></li>
+       <li><a ui-sref="#">Share App</a></li>
+     </ul>
    </div>
+   <ion-nav-bar class="bar bar-header bar-assertive">
+
+
+   </ion-nav-bar>
+
+   <ion-nav-view animation="slide-left-right">
+
+   </ion-nav-view>
  </div>
+</div>
 </body>
 </html>

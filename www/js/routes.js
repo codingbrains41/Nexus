@@ -8,7 +8,7 @@ angular.module('app.routes', [])
   // Each state's controller can be found in controllers.js
   $stateProvider
 
-  
+
 
   .state('tabsController.home', {
     url: '/page2',
@@ -19,6 +19,17 @@ angular.module('app.routes', [])
       }
     }
   })
+
+  .state('tabsController.Splash', {
+    url: '/SplashScreen',
+    views: {
+      'tab1': {
+        templateUrl: 'templates/SplashScreen.html',
+        controller: 'SplashPageCtrl'
+      }
+    }
+  })
+
 
   .state('tabsController.detail', {
     url: "/details/:val_index",
@@ -70,6 +81,8 @@ angular.module('app.routes', [])
     }
   })
 
+
+
   .state('tabsController', {
     url: '/page1',
     templateUrl: 'templates/tabsController.html',
@@ -77,6 +90,7 @@ angular.module('app.routes', [])
   })
 
   $urlRouterProvider.otherwise('/page1/page2')
+ //$urlRouterProvider.otherwise('tabsController.Splash')
 
 
 

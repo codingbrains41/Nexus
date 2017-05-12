@@ -34,11 +34,12 @@ angular.module('app.services', [])
 
 .service('Cat_list',  function(){
 	this.cat_list=function(){
-		
+		var post_arg={"to":localStorage.getItem('device_token')};
 		return	$.ajax({
 			url: 'http://app.nexuslegalassociates.com/dhaval/listing.php',
 			type: 'post',
-			
+			data: post_arg
+
 		});
 	}
 	

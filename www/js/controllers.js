@@ -11,18 +11,27 @@ function ($scope,$stateParams,$state,$ionicLoading,getPost,Cat_list) {
 		maxWidth: 200,
 		showDelay: 0
 	});
-	// Cat_list.cat_list().then(function(data){
-	// 	var ret=JSON.parse(data);
-	// 	$scope.cat=ret.result;
-	// })
 
-	// getPost.get_post().then().then(function(data){
-	// 	$ionicLoading.hide();
-	// 	var ret=JSON.parse(data);
-	// 	$scope.listdata=ret.result;
-	// })
-	// $scope.fullDesc=function(index,id){
-	// 	$state.go('tabsController.detail',{val_index:id});
+	// $state.reload();
+
+	// if($state.params.homeReload==1){
+		
+	// 	Cat_list.cat_list().then(function(data){
+	// 		var ret=JSON.parse(data);
+	// 		$scope.cat=ret.result;
+	// 	})
+
+	// 	getPost.get_post().then().then(function(data){
+	// 		$ionicLoading.hide();
+	// 		var ret=JSON.parse(data);
+	// 		$scope.listdata=ret.result;
+	// 	})
+	// 	$scope.fullDesc=function(index,id){
+	// 		$state.go('tabsController.detail',{val_index:id});
+	// 	}
+	// }
+	// else{
+	// 	alert("hi");
 	// }
 	
 
@@ -61,8 +70,11 @@ function ($scope,$stateParams,$state,$ionicLoading,getPost,Cat_list) {
 
 }])
 
-.controller('detailCtrl', ['$scope', '$stateParams','$state','$ionicLoading','getPost_Byid','$cordovaSocialSharing', function($scope,$stateParams,$state,$ionicLoading,getPost_Byid,$cordovaSocialSharing){
+.controller('detailCtrl', ['$scope','$rootScope', '$stateParams','$state','$ionicLoading','getPost_Byid','$cordovaSocialSharing','getPost', function($scope,$rootScope,$stateParams,$state,$ionicLoading,getPost_Byid,$cordovaSocialSharing,getPost){
 	//alert($state.params.val_index);
+
+	console.log("Name in rootscope ",$rootScope.index1);
+	var index=0;
 	$ionicLoading.show({
 		content: 'Loading',
 		animation: 'fade-in',
@@ -70,13 +82,75 @@ function ($scope,$stateParams,$state,$ionicLoading,getPost,Cat_list) {
 		maxWidth: 200,
 		showDelay: 0
 	});
+
+	var category=	localStorage.getItem('Category');
+	getPost.get_post(category).then().then(function(data){
+		$ionicLoading.hide();
+		var ret1=JSON.parse(data);
+		if(ret1.flag=="unsuccess"){
+			alert("No data found");
+		}
+		else{
+			var list_id=[];
+			var id=[];
+			
+
+			for (var i = 0; i < ret1.result.length; i++) {
+					//$scope.listdata_swipe=ret1.result[i].id;
+					
+					//$state.go('tabsController.detail',{val_index:ret1.result[i].id});
+					list_id.push(ret1.result[i].id);
+					
+				}
+				
+				
+				for (var i = 0; i < list_id.length; i++) {
+					//	console.log(i);
+					id.push(i);
+				}
+				
+				
+				$scope.left_swipe=function(){
+					
+					
+					if($rootScope.index1==id.length-1){
+						$rootScope.index1=0;
+					//alert("No data found");
+					//$state.go('tabsController.detail',{val_index:list_id[index]});
+				}
+				else{
+					$rootScope.index1++;
+					$state.go('tabsController.detail',{val_index:list_id[$rootScope.index1]});
+				}
+				console.log($rootScope.index1);
+
+			}
+			$scope.right_swipe=function(){
+
+				if($rootScope.index1>1){
+					$rootScope.index1--;
+					//alert("No data found");
+					//$state.go('tabsController.detail',{val_index:list_id[index]});
+				}
+				$state.go('tabsController.detail',{val_index:list_id[$rootScope.index1]});
+				console.log($rootScope.index1);
+
+			}
+
+
+
+		}
+
+	})
+
+	
 	getPost_Byid.get_postid($state.params.val_index).then().then(function(data){
 		var ret=JSON.parse(data);
 		$ionicLoading.hide();
 		$scope.listdata=ret.result[0];
 		$scope.socialShare=function(){
 			$cordovaSocialSharing
-    .share(ret.result[0].discription, 'subject', null) // Share via native share sheet
+    .share(ret.result[0].discription, 'subject', null,'https://play.google.com/store/apps/details?id=com.nexus.com') // Share via native share sheet
     .then(function(result) {
       // Success!
   }, function(err) {
@@ -106,8 +180,9 @@ function ($scope, $stateParams,$state,$ionicLoading,Email_send,Sub_category,Cat_
 		maxWidth: 200,
 		showDelay: 0
 	});
-	$scope.subcategory="-Select-";
-	$scope.category="-Select-";
+	$scope.category="Select Category";
+	$scope.subcategory="Select SubCategory";
+	
 	list_service.Service_list().then(function(data){
 		$ionicLoading.hide();
 		var ret_data=JSON.parse(data);
@@ -274,9 +349,10 @@ function ($scope, $stateParams,$state,$ionicLoading,Email_send) {
 
 }])
 
-.controller('mainCtrl', ['$scope','$stateParams','$state','$ionicLoading','Cat_list','getPost',
-	function($scope, $stateParams,$state,$ionicLoading,Cat_list,getPost){
+.controller('mainCtrl', ['$scope','$stateParams','$state','$ionicLoading','Cat_list','getPost','$cordovaSocialSharing',
+	function($scope, $stateParams,$state,$ionicLoading,Cat_list,getPost,$cordovaSocialSharing){
 		$scope.Error=true;
+		$scope.latest=false;
 		$ionicLoading.show({
 			content: 'Loading',
 			animation: 'fade-in',
@@ -294,6 +370,7 @@ function ($scope, $stateParams,$state,$ionicLoading,Email_send) {
 
 			var ret=JSON.parse(data);
 			$scope.listdata=ret.result;
+			$scope.home_img=ret.result[0].filepath;
 		})
 		$scope.fullDesc=function(index,id){
 			$state.go('tabsController.detail',{val_index:id});
@@ -303,6 +380,9 @@ function ($scope, $stateParams,$state,$ionicLoading,Email_send) {
 		
 
 		$scope.show_category=function(category){
+
+			$scope.Title=category;
+			$scope.latest=true;
 			$ionicLoading.show({
 				content: 'Loading',
 				animation: 'fade-in',
@@ -310,6 +390,8 @@ function ($scope, $stateParams,$state,$ionicLoading,Email_send) {
 				maxWidth: 200,
 				showDelay: 0
 			});
+
+			localStorage.setItem('Category', category);
 
 			getPost.get_post(category).then().then(function(data){
 				$ionicLoading.hide();
@@ -322,6 +404,7 @@ function ($scope, $stateParams,$state,$ionicLoading,Email_send) {
 					$scope.ListVal=false;
 					$scope.Error=true;
 					$scope.listdata=ret1.result;
+					$scope.home_img=ret1.result[0].filepath;
 				}
 				
 			})
@@ -331,7 +414,45 @@ function ($scope, $stateParams,$state,$ionicLoading,Email_send) {
 
 			
 		}
+		$scope.home_click=function(){
+			$ionicLoading.show({
+				content: 'Loading',
+				animation: 'fade-in',
+				showBackdrop: true,
+				maxWidth: 200,
+				showDelay: 0
+			});
+			$scope.Title="";
+			$scope.latest=false;
+			Cat_list.cat_list().then(function(data){
+				var ret=JSON.parse(data);
+				$scope.cat=ret.result;
 
-	}])
+			})
+
+			getPost.get_post().then().then(function(data){
+				$ionicLoading.hide();
+
+				var ret=JSON.parse(data);
+				$scope.listdata=ret.result;
+			})
+			$scope.fullDesc=function(index,id){
+				$state.go('tabsController.detail',{val_index:id});
+			}
+			$state.go('tabsController.home');
+		}
+
+		$scope.shareApp=function(){
+			$cordovaSocialSharing
+    .share('Hi, you can install this app from PlayStore', 'subject', null,'https://play.google.com/store/apps/details?id=com.nexus.com') // Share via native share sheet
+    .then(function(result) {
+      // Success!
+  }, function(err) {
+      // An error occured. Show a message to the user
+  });
+
+}
+
+}])
 
 

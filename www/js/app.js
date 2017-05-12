@@ -14,37 +14,60 @@ angular.module('app', ['ionic','ngCordova','app.controllers', 'app.routes', 'app
 
 })
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform,$rootScope) {
+  $rootScope.index1=0;
   $ionicPlatform.ready(function() {
+    var push = PushNotification.init({ "android": {"senderID": "860990461662"}});
 
-   $('#menu-button').click(function(){    
+    push.on('registration', function(data) {
+        // data.registrationId
+        console.log(data.registrationId);
+        localStorage.setItem("device_token",data.registrationId);
+      });
+
+    push.on('notification', function(data) {
+
+        // data.message,
+        // data.title,
+        // data.count,
+        // data.sound,
+        // data.image,
+        // data.additionalData
+      });
+
+    push.on('error', function(e) {
+        // e.message
+      });
+
+
+    $('#menu-button').click(function(){    
      $('.navigation-bar').toggleClass('open');
      $('#menu-button').toggleClass('active');
    });
-   
-   $('.view-container').click(function(){
+
+    $('.view-container').click(function(){
      $('.navigation-bar').removeClass('open');
      $('#menu-button').removeClass('active');
    });
 
-   $('#categories-list').click(function(){
+    $('#categories-list').click(function(){
      $('.navigation-bar').removeClass('open');
      $('#menu-button').removeClass('active');    
    });
 
-   $('#setting-list li').click(function(){
+    $('#setting-list li').click(function(){
      $('.navigation-bar').removeClass('open');
      $('#menu-button').removeClass('active');    
    });
-   
-   $('#cat_btn').click(function(){    
+
+    $('#cat_btn').click(function(){    
      $('#categories-list').show();
      $('#setting-list').hide();
      $('#cat_btn').addClass('active');
      $('#set_btn').removeClass('active');
    });
-   
-   $('#set_btn').click(function(){    
+
+    $('#set_btn').click(function(){    
      $('#setting-list').show();
      $('#categories-list').hide();
      $('#set_btn').addClass('active');
@@ -62,6 +85,8 @@ angular.module('app', ['ionic','ngCordova','app.controllers', 'app.routes', 'app
     }
   });
 })
+
+
 
 /*
   This directive is used to disable the "drag to open" functionality of the Side-Menu
